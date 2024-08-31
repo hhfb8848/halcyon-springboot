@@ -1,0 +1,71 @@
+name: Build and Deploy HalcyonApp
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 步骤1: 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+        # 从 GitHub 仓库检出代码，以进行构建操作
+      # 步骤2: 设置 JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+        # 配置 JDK 17 环境，用于构建 Java 项目
+      # 步骤3: 使用 Maven 构建项目
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+        # 使用 Maven 清理并打包项目，跳过测试步骤
+      # 步骤4: 构建 Docker 镜像
+      - name: Build Docker image
+        run: |
+          docker build -t halcyon-backend:latest .
+          # 构建 Docker 镜像并标记为 'halcyon-backend:latest'
+      # 步骤5: 登录到 Alibaba Cloud Docker Registry
+      - name: Login to Alibaba Cloud Docker Registry
+        run: echo ${{ secrets.ALIBABA_CLOUD_DOCKER_PASSWORD }} | docker login --username ${{ secrets.ALIBABA_CLOUD_DOCKER_USERNAME }} --password-stdin registry.cn-hangzhou.aliyuncs.com
+        # 从 GitHub Secrets 中读取 Docker 登录凭证，使用标准输入登录阿里云 Docker 镜像仓库
+      # 步骤6: 推送 Docker 镜像到 Alibaba Cloud 私有镜像仓库
+      - name: Push Docker image
+        run: |
+          docker tag halcyon-backend:latest registry.cn-hangzhou.aliyuncs.com/halcyon-admin/halcyon-backend:latest
+          docker push registry.cn-hangzhou.aliyuncs.com/halcyon-admin/halcyon-backend:latest
+        # 标记并推送镜像到阿里云私有镜像仓库
+      # 步骤7: 通过 SSH 在远程服务器上管理 Docker 容器
+      - name: SSH and manage Docker container on remote server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          password: ${{ secrets.REMOTE_SSH_KEY }}
+          port: 22
+          script: |
+            # 登录到阿里云 Docker 镜像仓库
+            echo ${{ secrets.ALIBABA_CLOUD_DOCKER_PASSWORD }} | docker login --username ${{ secrets.ALIBABA_CLOUD_DOCKER_USERNAME }} --password-stdin registry.cn-hangzhou.aliyuncs.com
+            
+            # 停止并删除旧的容器
+            docker stop halcyon-backend || true
+            docker rm halcyon-backend || true
+            
+            # 拉取最新的 Docker 镜像
+            docker pull registry.cn-hangzhou.aliyuncs.com/halcyon-admin/halcyon-backend:latest
+            
+            # 启动新的 Docker 容器
+            docker run -d --name halcyon-backend \
+              -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+              -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+              -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
+              -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
+              -e REDIS_DATABASE=${{ secrets.REDIS_DATABASE }} \
+              -e REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
+              -p 8888:8888 \
+              registry.cn-hangzhou.aliyuncs.com/halcyon-admin/halcyon-backend:latest
+
