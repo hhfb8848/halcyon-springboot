@@ -128,18 +128,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private void validateUserUniqueness(Long id, String name, String email, String phone) {
         SysUser sysUserName = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, name));
         if (sysUserName != null && !sysUserName.getId().equals(id)) {
-            throw new ServiceException("该用户名已存在");
+            throw new ServiceException(StatusCodeEnum.VALID_ERROR.getCode(), "该用户名已存在");
         }
         if (StringUtils.isNotEmpty(email)) {
             SysUser sysUserEmail = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getEmail, email));
             if (sysUserEmail != null && !sysUserEmail.getId().equals(id)) {
-                throw new ServiceException( "该邮箱已被用户：" + sysUserEmail.getUsername() + "绑定");
+                throw new ServiceException(StatusCodeEnum.VALID_ERROR.getCode(), "该邮箱已被用户：" + sysUserEmail.getUsername() + "绑定");
             }
         }
         if (StringUtils.isNotEmpty(phone)) {
             SysUser sysUserPhone = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getPhone, phone));
             if (sysUserPhone != null && !sysUserPhone.getId().equals(id)) {
-                throw new ServiceException("该手机号已被用户：" + sysUserPhone.getUsername() + "绑定");
+                throw new ServiceException(StatusCodeEnum.VALID_ERROR.getCode(), "该手机号已被用户：" + sysUserPhone.getUsername() + "绑定");
             }
         }
 

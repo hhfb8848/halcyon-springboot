@@ -2,6 +2,10 @@ package com.halcyon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.halcyon.dao.entity.SysDict;
+import com.halcyon.model.vo.ResponseResult;
+import com.halcyon.vo.dict.DictAndDataVO;
+
+import java.util.List;
 
 /**
  * 字典表(SysDict)表服务接口
@@ -24,5 +28,7 @@ public interface SysDictService extends IService<SysDict> {
      * @return 字典ID
      */
     Long updateDict(SysDict sysDict);
+
+    List<DictAndDataVO> listAllDictAndData();
 }
 

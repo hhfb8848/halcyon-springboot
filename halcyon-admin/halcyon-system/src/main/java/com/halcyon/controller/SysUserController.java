@@ -68,7 +68,7 @@ public class SysUserController {
     }
 
     /**
-     * 创建新用户
+     * 新增数据
      *
      * @param createDTO 实体对象
      * @return 新增结果

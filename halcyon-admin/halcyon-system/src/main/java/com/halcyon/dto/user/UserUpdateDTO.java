@@ -24,17 +24,19 @@ public class UserUpdateDTO {
      * 用户名（登录名）
      */
     @NotBlank(message = "用户名不能为空")
-    @Pattern(regexp = "^[\\S]{4,20}$", message = "用户名格式必须为4至20位的非空字符串")
+    @Pattern(regexp = "^[a-zA-Z0-9_]{4,16}$", message = "用户名必须为4至16位的字母、数字、下划线组成")
     private String username;
 
     /**
      * 邮箱号
      */
+    @Email(message = "邮箱格式不正确")
     private String email;
 
     /**
      * 手机号
      */
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "手机号格式不正确")
     private String phone;
 
     /**
@@ -64,6 +66,7 @@ public class UserUpdateDTO {
     /**
      * 出生日期
      */
+    @Past(message = "出生日期必须是过去的时间")
     private LocalDateTime birthday;
 
     /**

@@ -17,10 +17,12 @@ import com.halcyon.dto.dict.SysDictUpdateDTO;
 import com.halcyon.service.SysDictDataService;
 import com.halcyon.service.SysDictService;
 import com.halcyon.model.vo.ResponseResult;
+import com.halcyon.vo.dict.DictAndDataVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.halcyon.enums.StatusCodeEnum.FAIL;
@@ -109,6 +111,11 @@ public class SysDictController  {
             throw new ServiceException(FAIL.getCode(),"该字典下存在数据项，无法删除");
         }
         return ResponseResult.ok(this.sysDictService.removeById(id));
+    }
+
+    @GetMapping("/getAllDictAndData")
+    public ResponseResult<List<DictAndDataVO>> getAllDictAndData(){
+        return ResponseResult.ok(sysDictService.listAllDictAndData());
     }
 }
 

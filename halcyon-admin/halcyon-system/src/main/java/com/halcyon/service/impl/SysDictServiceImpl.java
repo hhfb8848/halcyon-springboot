@@ -8,8 +8,11 @@ import com.halcyon.exception.ServiceException;
 import com.halcyon.dao.entity.SysDict;
 import com.halcyon.dao.mapper.SysDictMapper;
 import com.halcyon.service.SysDictService;
+import com.halcyon.vo.dict.DictAndDataVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 字典表(SysDict)表服务实现类
@@ -53,6 +56,11 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         sysDict.setUpdateBy(Long.valueOf(StpUtil.getLoginId().toString()));
         sysDictMapper.updateById(sysDict);
         return sysDict.getId();
+    }
+
+    @Override
+    public List<DictAndDataVO> listAllDictAndData() {
+        return sysDictMapper.listAllDictAndData();
     }
 
     /**

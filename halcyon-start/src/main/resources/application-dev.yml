@@ -35,4 +35,7 @@ spring:
       host: 192.168.88.130
       database: 1
       port: 6379
-      password: 123456
+      password: km2024820
+--- #---------------------日志配置---------------------------
+log:
+  url: D:\halcyon\halcyon-springboot\logs
