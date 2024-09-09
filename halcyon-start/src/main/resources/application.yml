@@ -7,7 +7,7 @@ spring:
   application:
     name: halcyon
   profiles:
-    active: prod
+    active: dev
     # Servlet 配置
   servlet:
     # 文件上传相关配置项
