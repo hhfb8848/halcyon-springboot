@@ -6,7 +6,9 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.DesensitizedUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.annotation.Log;
 import com.halcyon.annotation.RepeatSubmit;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.utils.BeanCopyUtils;
 import com.halcyon.dao.entity.SysUser;
 import com.halcyon.dto.user.*;
@@ -74,6 +76,7 @@ public class SysUserController {
      * @return 新增结果
      */
     @PostMapping("/create")
+    @Log(title = "用户管理", businessType = OperBusinessType.INSERT)
     @RepeatSubmit
     @SaCheckPermission("system:user:create")
     public ResponseResult<Long> insert(@Valid @RequestBody SysUserCreateDTO createDTO) {
@@ -89,6 +92,7 @@ public class SysUserController {
      * @return 修改结果
      */
     @PutMapping("/update")
+    @Log(title = "用户管理", businessType = OperBusinessType.UPDATE)
     @SaCheckPermission("system:user:update")
     public ResponseResult<Long> update(@Valid @RequestBody UserUpdateDTO updateDTO) {
         SysUser sysUser = BeanCopyUtils.copyBean(updateDTO, SysUser.class);
@@ -102,6 +106,7 @@ public class SysUserController {
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "用户管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/updateStatus")
     @SaCheckPermission("system:user:updateStatus")
     public ResponseResult<Long> updateStatus(@Valid @RequestBody UserUpdateStatusDTO updateDTO) {
@@ -116,6 +121,7 @@ public class SysUserController {
      * @param idList 主键结合
      * @return 删除结果
      */
+    @Log(title = "用户管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete")
     @SaCheckPermission("system:user:delete")
     public ResponseResult<Integer> delete(@RequestBody List<Long> idList) {
@@ -128,6 +134,7 @@ public class SysUserController {
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "用户管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/resetPassword")
     @SaCheckPermission("system:user:resetPwd")
     public ResponseResult<Boolean> resetPassword(@Valid @RequestBody UserResetPwdDTO updateDTO) {

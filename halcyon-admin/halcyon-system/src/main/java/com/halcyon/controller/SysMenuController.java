@@ -5,8 +5,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.halcyon.annotation.AdminPrefix;
-import com.halcyon.annotation.RateLimiter;
-import com.halcyon.enums.BooleanEnum;
+import com.halcyon.annotation.Log;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.enums.StatusCodeEnum;
 import com.halcyon.dao.entity.SysMenu;
 
@@ -14,8 +14,6 @@ import com.halcyon.dto.menu.MenuQueryDTO;
 import com.halcyon.service.SysMenuService;
 
 import com.halcyon.service.SysUserRoleService;
-import com.halcyon.vo.menu.AsyncRoutesMetaVO;
-import com.halcyon.vo.menu.AsyncRoutesVO;
 import com.halcyon.model.vo.ResponseResult;
 import com.halcyon.vo.menu.SimpleMenuVO;
 import lombok.AllArgsConstructor;
@@ -40,15 +38,6 @@ public class SysMenuController {
 
     private final SysUserRoleService userRoleService;
 
-    /**
-     * 根据登录角色加载菜单树(用不到)
-     *
-     */
-    @GetMapping("/roleMenuTree")
-    @RateLimiter
-    public ResponseResult<List<AsyncRoutesVO>> selectRoleMenuTree() {
-        return ResponseResult.ok(buildMenuTree(this.sysMenuService.list(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getVisible,0))));
-    }
 
     /**
      * 返回菜单列表，树由前端构建（菜单管理）
@@ -88,11 +77,12 @@ public class SysMenuController {
     }
 
     /**
-     * 新增数据
+     * 新增菜单
      *
      * @param sysMenu 实体对象
      * @return 新增结果
      */
+    @Log(title = "菜单管理",businessType = OperBusinessType.INSERT)
     @PostMapping("/create")
     @SaCheckPermission("system:menu:create")
     public ResponseResult<Boolean> insert(@RequestBody SysMenu sysMenu) {
@@ -106,6 +96,7 @@ public class SysMenuController {
      * @param sysMenu 实体对象
      * @return 修改结果
      */
+    @Log(title = "菜单管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/update")
     @SaCheckPermission("system:menu:update")
     public ResponseResult<Void> update(@RequestBody SysMenu sysMenu) {
@@ -122,58 +113,12 @@ public class SysMenuController {
      *
      * @return 删除结果
      */
+    @Log(title = "菜单管理",businessType = OperBusinessType.UPDATE)
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("system:menu:delete")
     public ResponseResult<Boolean> delete(@PathVariable Long id) {
         return ResponseResult.ok(this.sysMenuService.deleteById(id));
     }
 
-    /**
-     * 构建菜单树
-     */
-    private List<AsyncRoutesVO> buildMenuTree(List<SysMenu> menuList) {
-        List<AsyncRoutesVO> rootNodes = new ArrayList<>();
-        for (SysMenu menu : menuList) {
-            if (menu.getParentId() == null || menu.getParentId() == 0) {
-                rootNodes.add(buildMenuNode(menu, menuList));
-            }
-        }
-        // 对根节点进行排序
-        rootNodes.sort(Comparator.comparingInt(o -> o.getMeta().getSortOrder()));
-        return rootNodes;
-    }
-
-    private AsyncRoutesVO buildMenuNode(SysMenu menu, List<SysMenu> menuList) {
-        AsyncRoutesVO node = new AsyncRoutesVO();
-        node.setPath(menu.getPath());
-        node.setName(menu.getName());
-        node.setComponent(menu.getComponent());
-        node.setRedirect(menu.getRedirect());
-        node.setType(menu.getType());
-
-        // 设置路由元信息
-        AsyncRoutesMetaVO meta = new AsyncRoutesMetaVO();
-        meta.setTitle(menu.getTitle());
-        meta.setIcon(menu.getIcon());
-        meta.setRoles(StpUtil.getRoleList());
-        meta.setSortOrder(menu.getSortOrder());
-        meta.setKeepAlive(BooleanEnum.fromValue(menu.getCacheFlag()));
-        meta.setFrameLoading(BooleanEnum.fromValue(menu.getFrameLoading()));
-        meta.setAuths(Optional.ofNullable(menu.getPerms())
-                .map(List::of)
-                .orElse(Collections.emptyList()));
-        meta.setFrameSrc(menu.getFrameSrc());
-        node.setMeta(meta);
-        // 递归构建子节点
-        List<AsyncRoutesVO> children = new ArrayList<>();
-        for (SysMenu childMenu : menuList) {
-            if (childMenu.getParentId() != null && childMenu.getParentId().equals(menu.getId())) {
-                children.add(buildMenuNode(childMenu, menuList));
-            }
-        }
-        children.sort(Comparator.comparingInt(o -> o.getMeta().getSortOrder()));
-        node.setChildren(children);
-        return node;
-    }
 }
 

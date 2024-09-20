@@ -3,8 +3,10 @@ package com.halcyon.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.annotation.Log;
 import com.halcyon.annotation.RepeatSubmit;
 import com.halcyon.enums.BusinessStatusEnum;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.enums.NoticeTypeEnum;
 import com.halcyon.exception.ServiceException;
 import com.halcyon.dto.notice.NoticeCreateDTO;
@@ -67,6 +69,7 @@ public class SysNoticeController {
      * @param createDTO 实体对象
      * @return 新增结果
      */
+    @Log(title = "公告管理",businessType = OperBusinessType.INSERT)
     @PostMapping("/create")
     @RepeatSubmit
     @SaCheckPermission("system:notice:create")
@@ -83,6 +86,7 @@ public class SysNoticeController {
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "公告管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/update")
     @SaCheckPermission("system:notice:update")
     public ResponseResult<Long> update(@Valid @RequestBody NoticeUpdateDTO updateDTO) {
@@ -96,6 +100,7 @@ public class SysNoticeController {
      * @param idList 主键结合
      * @return 删除结果
      */
+    @Log(title = "公告管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete")
     @SaCheckPermission("system:notice:delete")
     public ResponseResult<Boolean> delete(@RequestBody List<Long> idList) {

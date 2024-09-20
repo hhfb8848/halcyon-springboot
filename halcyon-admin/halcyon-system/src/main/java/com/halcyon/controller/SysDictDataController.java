@@ -6,6 +6,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.annotation.Log;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.utils.BeanCopyUtils;
 import com.halcyon.utils.StringUtils;
 import com.halcyon.dao.entity.SysDictData;
@@ -69,6 +71,7 @@ public class SysDictDataController  {
      * @param createDTO 实体对象
      * @return 新增结果
      */
+    @Log(title = "字典数据项管理",businessType = OperBusinessType.INSERT)
     @PostMapping("/create")
     @SaCheckPermission("system:dict:data:create")
     public ResponseResult<Long> insert(@Valid @RequestBody SysDictDataCreateDTO createDTO) {
@@ -82,6 +85,7 @@ public class SysDictDataController  {
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "字典数据项管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("update")
     @SaCheckPermission("system:dict:data:update")
     public ResponseResult<Long> update(@Valid @RequestBody SysDictDataUpdateDTO updateDTO) {
@@ -95,6 +99,7 @@ public class SysDictDataController  {
      * @param idList 主键结合
      * @return 删除结果
      */
+    @Log(title = "字典数据项管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete")
     @SaCheckPermission("system:dict:data:delete")
     public ResponseResult<Boolean> delete(@RequestBody List<Long> idList) {

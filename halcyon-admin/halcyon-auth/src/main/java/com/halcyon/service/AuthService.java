@@ -24,5 +24,5 @@ public interface AuthService {
      * @param userLoginDTO 参数
      * @return 返回
      */
-    UserLoginVO login(UserLoginDTO userLoginDTO, HttpServletRequest request);
+    UserLoginVO login(UserLoginDTO userLoginDTO);
 }

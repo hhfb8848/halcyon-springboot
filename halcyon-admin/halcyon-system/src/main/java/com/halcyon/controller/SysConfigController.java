@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.halcyon.annotation.Log;
 import com.halcyon.convert.sysConfig.SysConfigConvert;
 import com.halcyon.annotation.AdminPrefix;
 import com.halcyon.enums.BooleanEnum;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.exception.ServiceException;
 import com.halcyon.utils.BeanCopyUtils;
 import com.halcyon.utils.StringUtils;
@@ -72,6 +74,7 @@ public class SysConfigController {
      * @param createDTO 实体对象
      * @return 新增结果
      */
+    @Log(title = "配置管理",businessType = OperBusinessType.INSERT)
     @PostMapping("/create")
     @SaCheckPermission("system:config:create")
     public ResponseResult<Integer> insert(@Valid @RequestBody SysConfigCreateDTO createDTO) {
@@ -85,6 +88,7 @@ public class SysConfigController {
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "配置管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/update")
     @SaCheckPermission("system:config:update")
     public ResponseResult<Integer> update(@Valid @RequestBody SysConfigUpdateDTO updateDTO) {
@@ -98,6 +102,7 @@ public class SysConfigController {
      * @param id 主键
      * @return 删除结果
      */
+    @Log(title = "配置管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("system:config:delete")
     public ResponseResult<Boolean> delete(@PathVariable Long id) {

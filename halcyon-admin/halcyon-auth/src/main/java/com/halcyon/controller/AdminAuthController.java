@@ -2,6 +2,7 @@ package com.halcyon.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.annotation.LoginLog;
 import com.halcyon.dto.UserLoginDTO;
 import com.halcyon.dto.UserRegisterDTO;
 import com.halcyon.service.AuthService;
@@ -27,9 +28,13 @@ public class AdminAuthController {
 
     private final AuthService authService;
 
+    /**
+     * 第一个参数不可改变位置
+     */
+    @LoginLog
     @PostMapping("/login")
-    public ResponseResult<UserLoginVO> login(@Valid @RequestBody UserLoginDTO user, HttpServletRequest request){
-        return ResponseResult.ok(authService.login(user,request));
+    public ResponseResult<UserLoginVO> login(@Valid @RequestBody UserLoginDTO user){
+        return ResponseResult.ok(authService.login(user));
     }
 
     @PostMapping("/register")

@@ -10,6 +10,8 @@ import cn.hutool.core.util.URLUtil;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.annotation.Log;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.utils.BeanCopyUtils;
 import com.halcyon.dao.entity.SysFile;
 import com.halcyon.dto.file.FileCreateDTO;
@@ -89,6 +91,7 @@ public class SysFileController  {
     /**
      * 删除文件
      */
+    @Log(title = "文件列表管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("system:file:list:delete")
     public ResponseResult<Boolean> deleteFile(@PathVariable Long id) throws Exception {

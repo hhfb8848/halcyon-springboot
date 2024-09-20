@@ -5,7 +5,9 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.annotation.Log;
 import com.halcyon.convert.role.RoleConvert;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.enums.RoleEnum;
 import com.halcyon.enums.StatusCodeEnum;
 import com.halcyon.exception.ServiceException;
@@ -75,6 +77,7 @@ public class SysRoleController {
      * @param createDTO 实体对象
      * @return 新增结果
      */
+    @Log(title = "角色管理",businessType = OperBusinessType.INSERT)
     @PostMapping("/create")
     @SaCheckPermission("system:role:create")
     public ResponseResult<Long> insert(@Valid @RequestBody SysRoleCreateDTO createDTO) {
@@ -88,6 +91,7 @@ public class SysRoleController {
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "角色管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/update")
     @SaCheckPermission("system:role:update")
     public ResponseResult<Long> update(@Valid @RequestBody SysRoleUpdateDTO updateDTO) {
@@ -101,10 +105,10 @@ public class SysRoleController {
      * @param id 主键
      * @return 删除结果
      */
+    @Log(title = "角色管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("system:role:delete")
     public ResponseResult<Boolean> delete(@PathVariable Long id) {
-
         if (Objects.nonNull(RoleEnum.fromValue(id))) {
             throw new ServiceException(StatusCodeEnum.FAIL.getCode(), "系统内置角色无法删除");
         }

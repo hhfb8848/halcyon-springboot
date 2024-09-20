@@ -18,9 +18,6 @@
         <result property="createBy" column="create_by" jdbcType="INTEGER"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="updateBy" column="update_by" jdbcType="INTEGER"/>
-        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
-        <result property="ipAddress" column="ip_address" jdbcType="VARCHAR"/>
-        <result property="ipSource" column="ip_source" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="SysUserVOResultMap" type="com.halcyon.vo.user.SysUserVO">
@@ -36,15 +33,12 @@
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="create_by" property="createBy"/>
-        <result column="last_login_time" property="lastLoginTime"/>
-        <result column="ip_address" property="ipAddress"/>
-        <result column="ip_source" property="ipSource"/>
         <result column="register_source" property="registerSource"/>
     </resultMap>
 
     <sql id="Base_VO_Column_List">
         id
-        , username, email, phone, nickname, avatar, intro, gender, birthday, status, create_time, create_by, last_login_time, ip_address, ip_source, register_source
+        , username, email, phone, nickname, avatar, intro, gender, birthday, status, create_time, create_by, register_source
     </sql>
 
     <select id="selectUserVOPage" resultMap="SysUserVOResultMap">

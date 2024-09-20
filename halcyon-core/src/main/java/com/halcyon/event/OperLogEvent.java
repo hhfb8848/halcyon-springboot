@@ -1,33 +1,32 @@
-package com.halcyon.dao.entity;
+package com.halcyon.event;
 
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
- * 操作日志记录表(SysOperLog)表实体类
+ * 操作日志事件
  *
- * @author sjh
- * @since 2024-04-24 10:35:56
+ * @author Lion Li
  */
-@SuppressWarnings("serial")
+
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class SysOperLog {
-    /**
-     * 日志主键
-     */
-    @TableId
-    private Long id;
+public class OperLogEvent implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     /**
-     * 模块标题
+     * 用户名
+     */
+    private String operUsername;
+
+    /**
+     * 操作模块
      */
     private String title;
 
@@ -37,7 +36,12 @@ public class SysOperLog {
     private Integer businessType;
 
     /**
-     * 方法名称
+     * 业务类型数组
+     */
+    private Integer[] businessTypes;
+
+    /**
+     * 请求方法
      */
     private String method;
 
@@ -47,22 +51,17 @@ public class SysOperLog {
     private String requestMethod;
 
     /**
-     * 操作类别（0其它 1后台用户 2前台用户）
+     * 操作类别（0其它 1后台用户）
      */
     private Integer operatorType;
 
     /**
-     * 操作用户名
-     */
-    private String operUsername;
-
-    /**
-     * 请求URL
+     * 请求url
      */
     private String operUrl;
 
     /**
-     * 主机地址
+     * 操作地址
      */
     private String operIp;
 
@@ -100,7 +99,4 @@ public class SysOperLog {
      * 消耗时间
      */
     private Long costTime;
-
-
 }
-

@@ -1,7 +1,7 @@
 package com.halcyon.annotation;
 
 
-import com.halcyon.enums.BusinessType;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.enums.OperatorType;
 
 import java.lang.annotation.*;
@@ -23,7 +23,7 @@ public @interface Log {
     /**
      * 功能
      */
-    public BusinessType businessType() default BusinessType.OTHER;
+    public OperBusinessType businessType() default OperBusinessType.OTHER;
 
     /**
      * 操作人类别

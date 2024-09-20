@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import static cn.hutool.extra.spring.SpringUtil.getApplicationContext;
+
 /**
  * spring工具类 方便在非spring管理环境中获取bean
  *
@@ -137,4 +139,12 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     public static String getRequiredProperty(String key) {
         return applicationContext.getEnvironment().getRequiredProperty(key);
     }
+
+    /**
+     * 获取spring上下文
+     */
+    public static ApplicationContext context() {
+        return getApplicationContext();
+    }
+
 }

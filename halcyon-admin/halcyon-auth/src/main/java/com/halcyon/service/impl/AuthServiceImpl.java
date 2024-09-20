@@ -79,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserLoginVO login(UserLoginDTO userLoginDTO, HttpServletRequest request) {
+    public UserLoginVO login(UserLoginDTO userLoginDTO) {
         SysUser sysUser = userMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, userLoginDTO.getUsername()).or().eq(SysUser::getEmail, userLoginDTO.getUsername()));
         if (Objects.isNull(sysUser)) {
             throw new ServiceException(USER_NOT_EXIST);
@@ -116,21 +116,14 @@ public class AuthServiceImpl implements AuthService {
         // 构建菜单树
         List<AsyncRoutesVO> asyncRoutesVOList = menuService.buildMenuTreeByRoles(roleIdList);
 
-        if (asyncRoutesVOList.size() == 0) {
+        if (asyncRoutesVOList.isEmpty()) {
             throw new ServiceException(USER_NO_ACCESS);
         }
-        // 获取请求参数信息
-        String ipAddress = IpUtils.getIpAddress(request);
-        String ipSource = AddressUtils.getRealAddressByIP(ipAddress);
-        sysUser.setLastLoginTime(TimeUtils.now());
-        sysUser.setIpAddress(ipAddress);
-        sysUser.setIpSource(ipSource);
-        // 更新登录信息
-        userMapper.updateById(sysUser);
         // 验证成功后的登录处理
         StpUtil.login(sysUser.getId());
-        // 用户角色code与权限存入缓存
+        // 用户角色code与权限,用户名存入缓存
         SaSession currentSession = StpUtil.getTokenSession();
+        currentSession.set(SaSession.USER,sysUser.getUsername());
         currentSession.set(SaSession.ROLE_LIST, roleCodeList);
         currentSession.set(SaSession.PERMISSION_LIST, permissionService.getMenuPermissionByRoles(roleIdList));
 

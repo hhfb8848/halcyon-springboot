@@ -6,7 +6,6 @@
 <!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
 <configuration  scan="true" scanPeriod="10 seconds">
     <contextName>logback</contextName>
-
     <!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义后，可以使“${}”来使用变量。 -->
     <springProperty scope="context" name="LOG_URL" source="log.url" />
     <property name="log.path" value="${LOG_URL}" />

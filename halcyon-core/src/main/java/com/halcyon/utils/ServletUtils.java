@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.halcyon.constant.Constants;
 import com.halcyon.text.Convert;
 import jakarta.servlet.ServletRequest;
@@ -23,7 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  *
  * @author ruoyi
  */
-public class ServletUtils {
+public class ServletUtils  extends JakartaServletUtil {
     /**
      * 获取String参数
      */
@@ -185,5 +186,9 @@ public class ServletUtils {
         } catch (UnsupportedEncodingException e) {
             return StringUtils.EMPTY;
         }
+    }
+
+    public static String getClientIP() {
+        return getClientIP(getRequest());
     }
 }

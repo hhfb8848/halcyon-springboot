@@ -1,30 +1,21 @@
-package com.halcyon.dao.entity;
+package com.halcyon.event;
 
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-
 /**
- * 系统访问记录(SysLoginLog)表实体类
- *
- * @author sjh
- * @since 2024-04-24 10:35:56
+ * 登录事件
  */
-@SuppressWarnings("serial")
+
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class SysLoginLog {
-    /**
-     * 访问ID
-     */
-    @TableId
-    private Long id;
+public class LoginLogEvent implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * 用户账号
@@ -66,6 +57,4 @@ public class SysLoginLog {
      */
     private LocalDateTime loginTime;
 
-
 }
-

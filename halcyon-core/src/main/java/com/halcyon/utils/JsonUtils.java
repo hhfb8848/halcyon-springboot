@@ -1,5 +1,6 @@
 package com.halcyon.utils;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,8 @@ import java.util.List;
  */
 @Slf4j
 public class JsonUtils {
+
+    private static final ObjectMapper OBJECT_MAPPER = SpringUtils.getBean(ObjectMapper.class);
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -200,5 +204,24 @@ public class JsonUtils {
     public static boolean isJson(String text) {
         return JSONUtil.isTypeJSON(text);
     }
-
+    /**
+     * 将JSON格式的字符串转换为Dict对象
+     *
+     * @param text JSON格式的字符串
+     * @return 转换后的Dict对象，如果字符串为空或者不是JSON格式则返回null
+     * @throws RuntimeException 如果转换过程中发生IO异常，则抛出运行时异常
+     */
+    public static Dict parseMap(String text) {
+        if (StringUtils.isBlank(text)) {
+            return null;
+        }
+        try {
+            return OBJECT_MAPPER.readValue(text, OBJECT_MAPPER.getTypeFactory().constructType(Dict.class));
+        } catch (MismatchedInputException e) {
+            // 类型不匹配说明不是json
+            return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

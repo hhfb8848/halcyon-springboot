@@ -16,7 +16,7 @@ import java.io.File;
  *
  * @author 芋道源码
  */
-public class FileUtils {
+public class FileUtils  extends FileUtil {
 
     /**
      * 创建临时文件

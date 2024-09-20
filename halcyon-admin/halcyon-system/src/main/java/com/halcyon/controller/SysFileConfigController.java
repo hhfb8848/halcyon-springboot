@@ -5,8 +5,10 @@ package com.halcyon.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import com.halcyon.annotation.Log;
 import com.halcyon.convert.file.FileConfigConvert;
 import com.halcyon.annotation.AdminPrefix;
+import com.halcyon.enums.OperBusinessType;
 import com.halcyon.file.FileStorageEnum;
 import com.halcyon.file.client.FileClientConfig;
 import com.halcyon.utils.BeanCopyUtils;
@@ -75,6 +77,7 @@ public class SysFileConfigController{
      * @param createDTO 实体对象
      * @return 新增结果
      */
+    @Log(title = "文件配置管理",businessType = OperBusinessType.INSERT)
     @PostMapping("/create")
     @SaCheckPermission("system:file:config:create")
     public ResponseResult<Long> insert(@Valid @RequestBody FileConfigCreateDTO createDTO) {
@@ -89,6 +92,7 @@ public class SysFileConfigController{
      * @param updateDTO 实体对象
      * @return 修改结果
      */
+    @Log(title = "文件配置管理",businessType = OperBusinessType.UPDATE)
     @PutMapping("/update")
     @SaCheckPermission("system:file:config:update")
     public ResponseResult<Long> update(@Valid @RequestBody FileConfigUpdateDTO updateDTO) {
@@ -100,6 +104,7 @@ public class SysFileConfigController{
     /**
      * 设为主配置
      */
+    @Log(title = "文件配置管理")
     @PutMapping("/updateMaster/{id}")
     @SaCheckPermission("system:file:config:updateMaster")
     public ResponseResult<Boolean> updateFileConfigMaster(@PathVariable Long id) {
@@ -113,6 +118,7 @@ public class SysFileConfigController{
      * @param id 主键
      * @return 删除结果
      */
+    @Log(title = "文件配置管理",businessType = OperBusinessType.DELETE)
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("system:file:config:delete")
     public ResponseResult<Boolean> delete(@PathVariable Long id) {

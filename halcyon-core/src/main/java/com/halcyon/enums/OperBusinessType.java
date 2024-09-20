@@ -1,58 +1,63 @@
 package com.halcyon.enums;
 
+import lombok.Getter;
+
 /**
  * 业务操作类型
  *
  * @author ruoyi
  */
-public enum BusinessType {
+@Getter
+public enum OperBusinessType {
     /**
      * 其它
      */
-    OTHER,
+    OTHER(0),
 
     /**
      * 新增
      */
-    INSERT,
+    INSERT(1),
 
     /**
      * 修改
      */
-    UPDATE,
+    UPDATE(2),
 
     /**
      * 删除
      */
-    DELETE,
+    DELETE(3),
 
     /**
      * 授权
      */
-    GRANT,
+    GRANT(4),
 
     /**
      * 导出
      */
-    EXPORT,
+    EXPORT(5),
 
     /**
      * 导入
      */
-    IMPORT,
+    IMPORT(6),
 
     /**
      * 强退
      */
-    FORCE,
-
-    /**
-     * 生成代码
-     */
-    GENCODE,
+    FORCE(7),
 
     /**
      * 清空数据
      */
-    CLEAN,
+    CLEAR(8);
+
+    private final int value;
+
+    OperBusinessType(int value) {
+        this.value = value;
+    }
+
 }

@@ -101,20 +101,6 @@ public class SysUser {
      */
     private Long updateBy;
 
-    /**
-     * 上次登录时间
-     */
-    private LocalDateTime lastLoginTime;
-
-    /**
-     * 最后登录IP地址
-     */
-    private String ipAddress;
-
-    /**
-     * 最后登录IP来源
-     */
-    private String ipSource;
 
     /**
      * 注册来源
