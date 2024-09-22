@@ -552,9 +552,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'super-admin', 'e10adc3949ba59abbe56e057f20f883e', '', '', '超级管理员', 'http://127.0.0.1:8888/admin/sysFile/check-file/3/get/1104b7a9d94b875101a1e6d4a2918cbeda6690179a21e4f0ca3387c47a715095.png', '我是超级管理员', 1, '2001-02-21 16:00:00', 0, '2024-05-09 17:22:35', 1, '2024-09-01 01:18:01', 1, '2024-09-01 01:17:10', '127.0.0.1', '内网IP', '内网IP', 0);
-INSERT INTO `sys_user` VALUES (2, 'admin', 'a66abb5684c45962d887564f08346e8d', '', '', '管理员', 'http://127.0.0.1:8888/admin/sysFile/check-file/3/get/f34223f8486c2de2d752ea93887a87f707a8241720b9bc7852f3a6ba1b0f54e3.png', '普通管理员，无写权限', 0, '2024-08-02 16:00:00', 0, '2024-07-10 22:20:18', 1, '2024-09-01 01:20:09', 1, '2024-08-21 17:29:45', '127.0.0.1', '内网IP', NULL, 0);
-
+INSERT INTO `sys_user` VALUES (1, 'superAdmin', 'e10adc3949ba59abbe56e057f20f883e', '', '', '奥特曼', 'http://127.0.0.1:8888/admin/sysFile/check-file/3/get/3ee9a6ae8cd2cdab69fe0e505ff1adb1b24c812d00d6e20c226f3487702c0b1c.png', '我是超级管理员', 0, '2001-02-21 16:00:00', 0, '2024-05-09 17:22:35', 1, '2024-09-11 11:23:20', 1, '内网IP', 0);
+INSERT INTO `sys_user` VALUES (2, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', '', '哆啦A梦', 'http://127.0.0.1:8888/admin/sysFile/check-file/3/get/f34223f8486c2de2d752ea93887a87f707a8241720b9bc7852f3a6ba1b0f54e3.png', '', 0, '2024-08-02 16:00:00', 0, '2024-07-10 22:20:18', 1, '2024-08-27 17:49:29', 1, NULL, 0);
 -- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
